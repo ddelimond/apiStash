@@ -6,7 +6,7 @@ const bodyParser = require('body-parser')
 const app = express()
 const port = process.env.port || 8000
 
-console.log(process.env.connectionString)
+
 
 mongoose.connect(process.env.connectionString)
     .then(() => {
@@ -15,6 +15,9 @@ mongoose.connect(process.env.connectionString)
     .catch((err) => {
         console.log(`failed to connect to Db error:${err}`)
     })
+
+
+
 
 
 app.listen(port, () => {
