@@ -8,14 +8,15 @@ const productSchema = mongoose.Schema({
         unique: true
     },
 
-    image: {
+    img: {
         type: String,
         required: true
     },
 
-    name: {
+    title: {
         type: String,
-        required: true
+        required: true,
+        unique: true
     },
 
     desc: {
@@ -23,19 +24,21 @@ const productSchema = mongoose.Schema({
     },
 
     color: {
-        type: Array,
+        type: String,
         required: true
     },
 
     size: {
-        type: Array,
+        type: String,
         required: true
     },
 
-    category: {
+    categories: {
         type: Array,
         required: true
     }
-})
+},
+    { timestamps: true }
+)
 
 module.exports = mongoose.model('Product', productSchema)
