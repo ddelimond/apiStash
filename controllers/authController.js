@@ -1,5 +1,6 @@
 const user = require('../models/User.js')
 const bcrypt = require('bcrypt')
+const jwt = require('jsonwebtoken')
 
 module.exports = {
     register: async (req, res) => {
@@ -16,11 +17,27 @@ module.exports = {
         try {
             const { username, password } = req.body
 
-            console.log(username)
+            const dbUser = await user.findOne({ username: username })
 
-            const foundUser = await user.findOne({ username: username })
-            res.status(200)
-            console.log(foundUser)
+            if (!dbUser) {
+                console.log('User does not exist')
+            } else {
+                if (await bcrypt.compare(password, dbUser.password)) {
+                    console.log('Successful login')
+                    const accessToken = jwt.sign({
+                        id: dbUser._id,
+                        isAdmin: dbUser.isAdmin,
+                    }, process.env.jwtSec, { expiresIn: "1d" })
+
+
+                    const { password, ...others } = dbUser._doc;
+                    console.log(others)
+                    res.status(200).json(...others, accessToken)
+                } else {
+                    console.log('Incorrect Password')
+                    res.status(500)
+                }
+            }
         } catch (error) {
             console.log(error)
             res.status(500)
