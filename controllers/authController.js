@@ -31,8 +31,7 @@ module.exports = {
 
 
                     const { password, ...others } = dbUser._doc;
-                    console.log(others)
-                    res.status(200).json(...others, accessToken)
+                    res.status(200).json({ others, accessToken })
                 } else {
                     console.log('Incorrect Password')
                     res.status(500)
